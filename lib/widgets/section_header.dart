@@ -1,26 +1,6 @@
-/*
- *     Copyright (C) 2026 Valeri Gokadze
- *
- *     Musify is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     Musify is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- *
- *     For more information about Musify, including how to contribute,
- *     please visit: https://github.com/gokadzev/Musify
- */
-
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:musify/widgets/section_title.dart';
+import 'package:musify/theme/app_colors.dart';
 
 class SectionHeader extends StatelessWidget {
   const SectionHeader({
@@ -29,24 +9,47 @@ class SectionHeader extends StatelessWidget {
     this.icon,
     this.actionButton,
   });
+
   final String title;
   final IconData? icon;
   final Widget? actionButton;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: SectionTitle(
-            title,
-            Theme.of(context).colorScheme.primary,
-            icon: icon,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 20, 12, 6),
+      child: Row(
+        children: [
+          // Teal accent bar
+          Container(
+            width: 4,
+            height: 20,
+            decoration: BoxDecoration(
+              color: tuneTeal,
+              borderRadius: BorderRadius.circular(2),
+            ),
           ),
-        ),
-        if (actionButton != null) actionButton!,
-      ],
+          const SizedBox(width: 10),
+          if (icon != null) ...[
+            Icon(icon, size: 18, color: tuneTeal),
+            const SizedBox(width: 6),
+          ],
+          Expanded(
+            child: Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: tuneText,
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                letterSpacing: -0.2,
+              ),
+            ),
+          ),
+          if (actionButton != null) actionButton!,
+        ],
+      ),
     );
   }
 }

@@ -1,24 +1,3 @@
-/*
- *     Copyright (C) 2026 Valeri Gokadze
- *
- *     Musify is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     Musify is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- *
- *     For more information about Musify, including how to contribute,
- *     please visit: https://github.com/gokadzev/Musify
- */
-
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -29,6 +8,7 @@ import 'package:musify/services/common_services.dart';
 import 'package:musify/services/listening_stats_service.dart';
 import 'package:musify/services/playlists_manager.dart';
 import 'package:musify/services/settings_manager.dart';
+import 'package:musify/theme/app_colors.dart';
 import 'package:musify/utilities/app_utils.dart';
 import 'package:musify/utilities/async_loader.dart';
 import 'package:musify/utilities/listening_stats_utils.dart';
@@ -73,46 +53,121 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  String _greeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  }
+
   @override
   Widget build(BuildContext context) {
     final playlistHeight = MediaQuery.sizeOf(context).height * 0.25 / 1.1;
-    return Scaffold(
-      appBar: AppBar(title: const Text('Musify.')),
-      body: SingleChildScrollView(
-        padding: commonSingleChildScrollViewPadding,
-        child: Column(
-          children: [
-            ValueListenableBuilder<String?>(
-              valueListenable: announcementURL,
-              builder: (_, _url, __) {
-                if (_url == null) return const SizedBox.shrink();
-                final isSponsorshipAnnouncement = isSponsorshipAnnouncementUrl(
-                  _url,
-                );
-                final _message = isSponsorshipAnnouncement
-                    ? context.l10n!.sponsorProject
-                    : context.l10n!.newAnnouncement;
-                final _icon = isSponsorshipAnnouncement
-                    ? FluentIcons.heart_24_filled
-                    : FluentIcons.megaphone_24_filled;
 
-                return AnnouncementBox(
-                  message: _message,
-                  url: _url,
-                  icon: _icon,
-                  onDismiss: () async {
-                    announcementURL.value = null;
-                  },
-                );
-              },
-            ),
-            _buildSuggestedPlaylists(playlistHeight),
-            _buildSuggestedPlaylists(playlistHeight, showOnlyLiked: true),
-            _buildCurrentMonthRecapSection(),
-            _buildRecommendedSongsSection(),
-            const MiniPlayerBottomSpace(),
-          ],
+    return Scaffold(
+      backgroundColor: tuneBlack,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: commonSingleChildScrollViewPadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildBrandHeader(context),
+              ValueListenableBuilder<String?>(
+                valueListenable: announcementURL,
+                builder: (_, _url, __) {
+                  if (_url == null) return const SizedBox.shrink();
+                  final isSponsorshipAnnouncement = isSponsorshipAnnouncementUrl(_url);
+                  final _message = isSponsorshipAnnouncement
+                      ? context.l10n!.sponsorProject
+                      : context.l10n!.newAnnouncement;
+                  final _icon = isSponsorshipAnnouncement
+                      ? FluentIcons.heart_24_filled
+                      : FluentIcons.megaphone_24_filled;
+
+                  return AnnouncementBox(
+                    message: _message,
+                    url: _url,
+                    icon: _icon,
+                    onDismiss: () async {
+                      announcementURL.value = null;
+                    },
+                  );
+                },
+              ),
+              _buildSuggestedPlaylists(playlistHeight),
+              _buildSuggestedPlaylists(playlistHeight, showOnlyLiked: true),
+              _buildCurrentMonthRecapSection(),
+              _buildRecommendedSongsSection(),
+              const MiniPlayerBottomSpace(),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  /// Tune Stream branded header: wordmark + greeting + avatar
+  Widget _buildBrandHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 18, 16, 4),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'TUNE STREAM',
+                  style: TextStyle(
+                    color: tuneTeal,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 3,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _greeting(),
+                  style: const TextStyle(
+                    color: tuneText,
+                    fontSize: 26,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                const Text(
+                  'Ready to press play?',
+                  style: TextStyle(
+                    color: tuneTextMuted,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () => context.push('/settings'),
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [tunePurple, tuneTeal],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: const Icon(
+                FluentIcons.person_24_filled,
+                color: tuneBlack,
+                size: 22,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -156,6 +211,7 @@ class _HomePageState extends State<HomePage> {
     final isLargeScreen = MediaQuery.of(context).size.width > 480;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionHeader(
           title: sectionTitle,
@@ -181,10 +237,11 @@ class _HomePageState extends State<HomePage> {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: itemCount,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       itemBuilder: (context, index) {
         final playlist = playlists[index];
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 6),
           child: GestureDetector(
             onTap: () => context.push('/home/playlist/${playlist['ytid']}'),
             child: PlaylistCube(playlist, size: height),
@@ -233,7 +290,6 @@ class _HomePageState extends State<HomePage> {
         if (displayMinutes <= 0 && songs.isEmpty) {
           return const SizedBox.shrink();
         }
-
         final previewSongs = songs.take(wrappedShareSongsLimit).toList();
         final periodLabel = formatMonthPeriodLabel(
           Localizations.localeOf(context),
