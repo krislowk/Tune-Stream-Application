@@ -39,7 +39,7 @@ class SectionHeader extends StatelessWidget {
               title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style: TextStyle(
                 color: tuneText,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,

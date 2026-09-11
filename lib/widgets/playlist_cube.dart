@@ -56,7 +56,7 @@ class PlaylistCube extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       child: Text(
         isAlbum ? context.l10n!.album : context.l10n!.playlist,
-        style: const TextStyle(
+        style: TextStyle(
           color: tuneText,
           fontSize: 11,
           fontWeight: FontWeight.w700,

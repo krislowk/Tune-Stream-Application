@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'TUNE STREAM',
                   style: TextStyle(
                     color: tuneTeal,
@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 4),
                 Text(
                   _greeting(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: tuneText,
                     fontSize: 26,
                     fontWeight: FontWeight.w800,
@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 2),
-                const Text(
+                Text(
                   'Ready to press play?',
                   style: TextStyle(
                     color: tuneTextMuted,
@@ -152,7 +152,7 @@ class _HomePageState extends State<HomePage> {
             child: Container(
               width: 44,
               height: 44,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [tunePurple, tuneTeal],
@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                   end: Alignment.bottomRight,
                 ),
               ),
-              child: const Icon(
+              child: Icon(
                 FluentIcons.person_24_filled,
                 color: tuneBlack,
                 size: 22,
@@ -314,7 +314,7 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 child: FilledButton.tonalIcon(
                   onPressed: () => context.push('/home/timeMachine'),
-                  icon: const Icon(FluentIcons.arrow_right_24_regular),
+                  icon: Icon(FluentIcons.arrow_right_24_regular),
                   label: Text(context.l10n!.listeningStats),
                 ),
               ),
