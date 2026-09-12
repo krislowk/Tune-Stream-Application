@@ -1,6 +1,5 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:musify/theme/app_colors.dart';
+import 'package:musify/widgets/section_title.dart';
 
 class SectionHeader extends StatelessWidget {
   const SectionHeader({
@@ -17,34 +16,15 @@ class SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 12, 6),
+      padding: const EdgeInsets.fromLTRB(16, 20, 12, 8),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Teal accent bar
-          Container(
-            width: 4,
-            height: 20,
-            decoration: BoxDecoration(
-              color: tuneTeal,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(width: 10),
-          if (icon != null) ...[
-            Icon(icon, size: 18, color: tuneTeal),
-            const SizedBox(width: 6),
-          ],
           Expanded(
-            child: Text(
+            child: SectionTitle(
               title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: tuneText,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                letterSpacing: -0.2,
-              ),
+              Theme.of(context).colorScheme.primary,
+              icon: icon,
             ),
           ),
           if (actionButton != null) actionButton!,

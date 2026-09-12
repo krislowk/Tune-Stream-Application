@@ -53,31 +53,24 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  String _greeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) return 'Good morning';
-    if (hour < 17) return 'Good afternoon';
-    return 'Good evening';
-  }
-
   @override
   Widget build(BuildContext context) {
     final playlistHeight = MediaQuery.sizeOf(context).height * 0.25 / 1.1;
 
     return Scaffold(
-      backgroundColor: tuneBlack,
+      backgroundColor: tuneBg,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: commonSingleChildScrollViewPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildBrandHeader(context),
               ValueListenableBuilder<String?>(
                 valueListenable: announcementURL,
                 builder: (_, _url, __) {
                   if (_url == null) return const SizedBox.shrink();
-                  final isSponsorshipAnnouncement = isSponsorshipAnnouncementUrl(_url);
+                  final isSponsorshipAnnouncement =
+                      isSponsorshipAnnouncementUrl(_url);
                   final _message = isSponsorshipAnnouncement
                       ? context.l10n!.sponsorProject
                       : context.l10n!.newAnnouncement;
@@ -103,71 +96,6 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  /// Tune Stream branded header: wordmark + greeting + avatar
-  Widget _buildBrandHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 18, 16, 4),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'TUNE STREAM',
-                  style: TextStyle(
-                    color: tuneTeal,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 3,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  _greeting(),
-                  style: TextStyle(
-                    color: tuneText,
-                    fontSize: 26,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  'Ready to press play?',
-                  style: TextStyle(
-                    color: tuneTextMuted,
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () => context.push('/settings'),
-            child: Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [tunePurple, tuneTeal],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Icon(
-                FluentIcons.person_24_filled,
-                color: tuneBlack,
-                size: 22,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -314,7 +242,7 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 child: FilledButton.tonalIcon(
                   onPressed: () => context.push('/home/timeMachine'),
-                  icon: Icon(FluentIcons.arrow_right_24_regular),
+                  icon: const Icon(FluentIcons.arrow_right_24_regular),
                   label: Text(context.l10n!.listeningStats),
                 ),
               ),
